@@ -26,7 +26,7 @@ conn.close()
 httpResponse = []
 for ip in result:
     param = {'key': cget('AbuseIPDB', 'apiKey'), 'category': cget('AbuseIPDB', 'categories'), 'comment': cget('AbuseIPDB', 'comment'), 'ip': ip}
-    r = requests.post(cget('AbuseIPDB', 'apiURL'), data=param)
+    r = requests.post(cget('AbuseIPDB', 'reportURL'), data=param)
     httpResponse.append(r.status_code)
 
 # Check whether all IPs were reported successfully
@@ -37,12 +37,12 @@ for code in httpResponse:
 
 # Create message for the notification
 if success:
-    pushoverApiMessage = 'AutoBlock: ' + str(result.__len__()) + ' IPs were blocked.'
+    message = 'AutoBlock: ' + str(result.__len__()) + ' IPs were blocked.'
 else:
-    pushoverApiMessage = 'AutoBlock: Reporting IPs failed.'
+    message = 'AutoBlock: Reporting IPs failed.'
 
 # Send a notification to the User via Pushover
-param = {'token': cget('Pushover', 'apiToken'), 'user': cget('Pushover', 'apiUser'), 'message': pushoverApiMessage}
+param = {'token': cget('Pushover', 'apiToken'), 'user': cget('Pushover', 'apiUser'), 'message': message}
 requests.post(cget('Pushover', 'apiURL'), data=param)
 
 # Save the time of this check in UTC epoch time (seconds since 01.01.1970)
