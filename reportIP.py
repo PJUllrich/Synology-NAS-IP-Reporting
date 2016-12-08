@@ -3,9 +3,10 @@ import sqlite3
 import requests
 import time
 import configparser
+import os
 
 # Read in the config file
-confPath = 'config.ini'
+confPath = os.path.dirname(os.path.realpath(__file__)) + '/config.ini'
 config = configparser.ConfigParser()
 config.read(confPath)
 
