@@ -1,5 +1,7 @@
 import calendar
 import sqlite3
+
+import logging
 import requests
 import time
 import configparser
@@ -9,6 +11,18 @@ import os
 confPath = os.path.dirname(os.path.realpath(__file__)) + '/config.ini'
 config = configparser.ConfigParser()
 config.read(confPath)
+
+# Get new Logger
+logger = logging.getLogger('reportIPLogger')
+
+# Create a Filehandler for the logger
+fh = logging.FileHandler('reportIP.log')
+fh.setLevel(logging.INFO)
+
+# Set the format of the logging output
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+logger.addHandler(fh)
 
 
 def cget(section, name):
@@ -41,6 +55,9 @@ if success:
     message = 'AutoBlock: ' + str(result.__len__()) + ' IPs were blocked.'
 else:
     message = 'AutoBlock: Reporting IPs failed.'
+
+# Log this event to the log file
+logger.info(message)
 
 # Send a notification to the User via Pushover
 param = {'token': cget('Pushover', 'apiToken'), 'user': cget('Pushover', 'apiUser'), 'message': message}
