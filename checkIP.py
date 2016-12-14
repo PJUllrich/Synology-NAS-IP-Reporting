@@ -4,15 +4,18 @@ import os
 import logging
 
 # Read in the config file
-confPath = os.path.dirname(os.path.realpath(__file__)) + '/config.ini'
+confPath = os.path.dirname(os.path.realpath(__file__)) + '/config/config.ini'
 config = configparser.ConfigParser()
 config.read(confPath)
 
 # Get new Logger
 logger = logging.getLogger('checkIPLogger')
+logger.setLevel(logging.INFO)
 
 # Create a Filehandler for the logger
-fh = logging.FileHandler('checkIP.log')
+if not os.path.exists('logs'):
+    os.makedirs('logs')
+fh = logging.FileHandler('logs/checkIP.log')
 fh.setLevel(logging.INFO)
 
 # Set the format of the logging output
