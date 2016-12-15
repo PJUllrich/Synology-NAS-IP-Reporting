@@ -17,9 +17,10 @@ logger = logging.getLogger('reportIPLogger')
 logger.setLevel(logging.INFO)
 
 # Create a Filehandler for the logger
-if not os.path.exists('logs'):
-    os.makedirs('logs')
-fh = logging.FileHandler('logs/reportIP.log')
+logPath = os.path.dirname(os.path.realpath(__file__)) + '/logs'
+if not os.path.exists(logPath):
+    os.makedirs(logPath)
+fh = logging.FileHandler(logPath + '/reportIP.log')
 fh.setLevel(logging.INFO)
 
 # Set the format of the logging output
